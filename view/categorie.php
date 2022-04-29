@@ -557,10 +557,19 @@ $x=$a->affichercategori();
 
 <a href="ajouterrs.php"> <button type="button" class="btn btn-primary"  style="margin-top:3%;margin-left:5%;border-radius: 10%;">ajouter</button></a>
 <br>
-  <br>
+ 
 
 </div>
+<form class="form-inline" method="post" action="generate_pdf_cat.php">
+<button type="submit" id="pdf" name="generate_pdf" class="btn btn-primary"  style="margin-top:3%;margin-left:5%;border-radius: 10%;"><i class="fa fa-pdf"" aria-hidden="true"></i>
+Generate PDF</button>
+</form>
 
+<form class="form-inline" method="post" action="stat.php">
+<button type="submit" id="stat_cat" name="stat_cat" class="btn btn-primary" style="margin-top:3%;margin-left:5%;border-radius: 10%;"><i class="fa fa-pdf"" aria-hidden="true"></i>
+Statestique</button>
+</form>
+<br>
 <table class="table align-items-center table-flush">
 
 <th>nom</th>

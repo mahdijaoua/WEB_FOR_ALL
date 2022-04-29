@@ -10,7 +10,7 @@ class servic{
 		$sql="SELECT * FROM produit
 
 		";
-		$db=config::getConnexion(); // :: because "getconnection" is a static function
+		$db=config::getConnexion(); // :: because "getconnection" is a static function no need for an instant it works with the class it self
 		try{
 			$liste=$db->query($sql);
 			return $liste;
@@ -19,6 +19,11 @@ class servic{
 			die("erreur:".$e->getMessage());
 		}
 	}
+
+
+
+
+
 	   function supprimerproduit($numprod){
  		$sql="DELETE  FROM produit WHERE `id`= $numprod ";
 		$db=config::getConnexion();
@@ -64,8 +69,8 @@ class servic{
  try{ $recipesStatement = $db->prepare($sql);
  	$recipesStatement->execute([ 'id'=>$ser->getid(),
  		            'couleur' =>$ser->getcouleur(),
- 		            'kilometrage'=>$ser-> getkilometrage(),
-					 'matricule'=>$ser-> getmatricule(),
+ 		            'kilometrage'=>$ser-> getkilometrage(),// => works for assosiativity as if we say 'dave'=>'kkkloi'
+					 'matricule'=>$ser-> getmatricule(),// dave's password is kkkloi
  				'image'=>$ser->getimage(),
  		            'id_cat'=>$ser->getidc(),
  		           
@@ -145,12 +150,15 @@ catch(Exception $e){
 
 
 
+
+
 function Ajoutercategorie($ser){
-$sql= "INSERT INTO `categorie` VALUES (:id, :nom)";
+$sql= "INSERT INTO `categorie` VALUES (:id, :nom, :occ_num)";
 $db=config::getConnexion();
 try{ $recipesStatement = $db->prepare($sql);
 $recipesStatement->execute([ 'id'=>$ser->getid(),
 				'nom' =>$ser->getnom(),
+				'occ_num'=>NULL,
 
 
 

@@ -86,7 +86,7 @@ include_once '../config.php';
                 <a class="nav-link" href="company.html"> Company </a>
               </li>
               <li class="nav-item ">
-                <a class="nav-link " href="contact.html">Contact us</a>
+                <a class="nav-link " href="mail.php">Contact us</a>
               </li>
             </ul>
           </div>
@@ -170,7 +170,7 @@ include_once '../config.php';
                         <a class="nav-link" href="company.html"> Company </a>
                       </li>
                       <li class="nav-item ">
-                        <a class="nav-link pr-0" href="contact.html">Contact us</a>
+                        <a class="nav-link pr-0" href="mail.php">Contact us</a>
                       </li>
                     </ul>
 

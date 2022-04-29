@@ -10,7 +10,7 @@ $prod=$produitc->afficherproduit();
 $a=new servic();
 $x=$a->affichercategori();
 
-session_start();
+
 
  ?>
 
@@ -559,10 +559,14 @@ session_start();
            
            <a href="ajouters.php"> <button type="button" class="btn btn-primary"  style="margin-top:3%;margin-left:5%;border-radius: 10%;">ajouter</button></a>
            <br>
-           <br>
+           
        
      </div>
-
+     <form class="form-inline" method="post" action="generate_pdf.php">
+<button type="submit" id="pdf" name="generate_pdf" class="btn btn-primary" style="margin-top:3%;margin-left:5%;border-radius: 10%;"><i class="fa fa-pdf"" aria-hidden="true"></i>
+Generate PDF</button>
+</form>
+<br>
               <table class="table align-items-center table-flush">
   <th>couleur</th>
   <th>kilometrage</th>
