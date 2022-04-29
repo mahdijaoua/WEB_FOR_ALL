@@ -1,12 +1,16 @@
 <?php 
 session_start();
+include ('../Controller/login.php');
+$user_data = check_login();
 include('../controller/panierC.php');
 include('../controller/commandC.php');
 $article = new panierC ;
 $article->delete();
-$prods=$article->read();
+$article->update();
+$prods=$article->read($user_data['idUtilisateur']);
+$c = new commandC;
+$c->add();
 ?>
-
 <!DOCTYPE html>
 <html>
 
@@ -199,24 +203,37 @@ $prods=$article->read();
                   <th scope="col">Produit</th>
                   <th scope="col">Prix</th>
                   <th scope="col">Qte</th>
+                  <th>Option</th>
                 </tr>
               </thead>
               <tbody>
-              <?php foreach ($prods as $product) : ?>
+              <?php $val="";$total=0; foreach ($prods as $product) : ?>
                 <tr>
                   <th><?= $product['id']?></th>
                   <td><?= $product['nom_prod']?></td>
                   <td><?= $product['prix']?></td>
-                  <td><?= $product['qte']?></td>
+                  <?php
+                  if(isset($_GET['update'])||isset($_GET['done'])){
+                    echo '<form action="chart.php?done" method="post">';
+                    echo '<td> <input style=width:50px type="text" value="' ;echo $product['qte'];echo '" name="qte"> <button type="submit">ok</button> <input type="text" name="id" hidden value="';echo $product['id'] ;echo '" > </form> </td>"';
+                  }else{
+                    echo '<td>'; echo $product['qte'];echo'</td>';
+                  }
+                 ?>
                   <td>
-                  <a href="chart.php?delete=<?=$product['id']?>">delete</a>
+                  <?php  $val=$val.$product['nom_prod'].'('.$product['qte'].')'.',';
+                         $total+=$product['prix']*$product['qte'];
+                  ?>
+                  <a href="chart.php?delete=<?=$product['id']?>">del</a>
+                  /
+                  <a href="chart.php?update">up</a>
                   </td>
                 </tr>
               <?php endforeach ?>
               </tbody>
               <tfoot>
                 <th>Prix total</th>
-                <td colspan="2">150$</td>
+                <td colspan="2"><?=$total?>$</td>
               </tfoot>
             </table>
           </div>
@@ -226,20 +243,62 @@ $prods=$article->read();
           <div class="contact_form-container">
             <form action="chart.php?checkout" id="checkout" method="POST">
               <div>
-                <input type="text" placeholder="Your Name" name="nom">
+                <input type="text" placeholder="Your Name" id="nom" name="nom">
+                <span id="nameer"></span>
               </div>
               <div>
-                <input type="text" placeholder="Your Phone" name="phone">
+                <input type="text" placeholder="Your Phone" id="phone" name="phone">
+                <span id="teler"></span>
               </div>
               <div>
-                <input type="text" class="message_input" placeholder="Message">
+                <input type="text" class="message_input" id="adresse" name="adresse" placeholder="adresse">
+                <span id="adder"></span>
               </div>
+              <input type="text" name="element" value="<?=$val?>" hidden>
+              <input type="number" name="prix" value="<?=$total?>" hidden>
               <div class="d-flex justify-content-end">
                 <button type="submit " class="">
-                  Checkout
+                  checkout
                 </button>
               </div>
             </form>
+            <script>
+						let myform =document.getElementById('checkout');
+						myform.addEventListener('submit',function(e){
+							let nameinput = document.getElementById('nom');
+							let tel = document.getElementById('phone');
+							let adresse = document.getElementById('adresse');
+							const regex = /^[a-zA-Z-\s]+$/;
+							if(nameinput.value === '' ){
+								let nameer = document.getElementById('nameer');
+								nameer.innerHTML="le champs nom est vide . ";
+								nameer.style.color ='red';
+								e.preventDefault();
+							}else if (!(regex.test(nameinput.value))){
+								let nameer = document.getElementById('nameer');
+								nameer.innerHTML = "le nom doit comporter des lettres,et tirets seulements.";
+								nameer.style.color='red';
+								e.preventDefault();
+							}
+							if(tel.value === '' ){
+								let teler = document.getElementById('teler');
+								teler.innerHTML="le champs telephone est vide . ";
+								teler.style.color ='red';
+								e.preventDefault();
+							}else if (!(/^[1-9]+$/.test(tel.value))){
+								let teler = document.getElementById('teler');
+								teler.innerHTML = "le tel doit comporter que des numero";
+								teler.style.color='red';
+								e.preventDefault();
+							}
+							if(adresse.value === '' ){
+								let suber = document.getElementById('adder');
+								suber.innerHTML="le champs adresse est vide . ";
+								suber.style.color ='red';
+								e.preventDefault();
+							}
+						});
+					</script>
           </div>
         </div>
       </div>

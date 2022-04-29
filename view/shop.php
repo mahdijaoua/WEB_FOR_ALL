@@ -1,8 +1,10 @@
 <?php 
 session_start();
+include ('../Controller/login.php');
+$user_data = check_login();
 include('../controller/panierC.php');
 $article = new panierC ;
-$article->add();
+$article->add($user_data['idUtilisateur']);
 ?>
 
 <!DOCTYPE html>
@@ -202,7 +204,7 @@ $article->add();
             </p>
             <p>quantity</p>
             <form action="shop.php?add" id="ajouterpanier1" method="post">
-            <input type="number" name="qte" placeholder="select quantity" min="1">
+            <input type="number" min=1 name="qte" placeholder="select quantity">
             <input type="text" name="nomprod" value="VTT" hidden>
             <input type="number" name="prix" value="50" hidden>
             </form>
@@ -233,7 +235,7 @@ $article->add();
             </p>
             <p>quantity</p>
             <form action="shop.php?add" id="ajouterpanier2" method="post">
-            <input type="number" name="qte" placeholder="select quantity">
+            <input type="number" min=1 name="qte" placeholder="select quantity">
             <input type="text" name="nomprod" value="piece" hidden>
             <input type="number" name="prix" value="20" hidden>
             </form>
