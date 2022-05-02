@@ -259,6 +259,11 @@ $articleS = $articleC->afficherarticle();
                                     <td><a class="btn btn-sm btn-primary" href="supprimerArticle.php?id=<?php echo $article['id'] ; ?>">supprimer</a></td>
                                 </tr>
                 <?php } ?>
+                <tfoot>
+				<tr>
+					<td><a class="btn btn-info" href="export_excel.php">Save as Excel</a></td>
+		
+			</tfoot>
                             </tbody>
                         </table>
                     </div>
