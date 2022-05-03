@@ -264,6 +264,12 @@ $articleS = $articleC->afficherarticle();
 					<td><a class="btn btn-info" href="export_excel.php">Save as Excel</a></td>
 		
 			</tfoot>
+
+            <tfoot>
+				<tr>
+					<td><a class="btn btn-info" href="generate_pdf.php">Save as PDF</a></td>
+		
+			</tfoot>
                             </tbody>
                         </table>
                     </div>
