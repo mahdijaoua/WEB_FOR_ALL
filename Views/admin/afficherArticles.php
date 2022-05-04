@@ -2,15 +2,23 @@
     require_once     '../../controller/articleC.php';
 
 $articleC = new articleC();
-$articleS = $articleC->afficherarticle();
 
+
+
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$perpage = isset($GET['per-page']) && $_GET['per-page'] <= 50 ? (int)$_GET['per-page'] : 3 ;
+$articleS = $articleC->pagination($page, $perpage);
+$totalP = $articleC->calcTotalRows($perpage);
+
+ 
  if(isset($_POST['tri'])) {
-    $articleS = $articleC->triuser();
- }else if(isset($_GET['idv'])) {
+    //$userS = $userC->triuser();
+    $articleS = $articleC->triCroissant($page, $perpage);
+  }
+  else if(isset($_GET['idv'])) {
     $articleS = $articleC->recheruser($_GET['idv']);
- }else {
-    $articleS = $articleC->afficherarticle();
  }
+
 
 ?>
 <!DOCTYPE html>
@@ -227,6 +235,17 @@ $articleS = $articleC->afficherarticle();
                 <div class="bg-light text-center rounded p-4">
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <h6 class="mb-0">liste des articels</h6>
+                        <tfoot>
+				<tr>
+					<td><a class="btn btn-info" href="export_excel.php">Save as Excel</a></td>
+		
+			</tfoot>
+
+            <tfoot>
+				<tr>
+					<td><a class="btn btn-info" href="generate_pdf.php">Save as PDF</a></td>
+		
+			</tfoot>
                         <a href="ajouterArticle.php">ajouter article</a>
                     </div>
                     <div class="table-responsive">
@@ -259,19 +278,26 @@ $articleS = $articleC->afficherarticle();
                                     <td><a class="btn btn-sm btn-primary" href="supprimerArticle.php?id=<?php echo $article['id'] ; ?>">supprimer</a></td>
                                 </tr>
                 <?php } ?>
-                <tfoot>
-				<tr>
-					<td><a class="btn btn-info" href="export_excel.php">Save as Excel</a></td>
-		
-			</tfoot>
-
-            <tfoot>
-				<tr>
-					<td><a class="btn btn-info" href="generate_pdf.php">Save as PDF</a></td>
-		
-			</tfoot>
+               
                             </tbody>
                         </table>
+
+                        <div class="row">
+        <nav>
+            <ul class="pagination">
+                <?php
+
+                    for ($x = 1; $x <= $totalP; $x++) :
+
+                ?>
+                
+                <li class="page-item">
+                    <a class="page-link" href="?page=<?php echo $x; ?>&per-page=<?php echo $perpage; ?>"><?php echo $x; ?></a><?php endfor; ?>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
                     </div>
                 </div>
             </div>

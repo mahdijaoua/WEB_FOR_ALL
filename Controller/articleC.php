@@ -166,7 +166,55 @@
 			catch(Exception $e){
 				die('Erreur:'. $e->getMeesage());
 			}
-		}
+		} 
+        public function pagination($page, $perPage)
+        {
+            $start = ($page > 1) ? ($page * $perPage) - $perPage : 0;
+            $sql = "SELECT * FROM article LIMIT {$start},{$perPage}";
+            $db = config::getConnexion();
+            try {
+                $liste = $db->prepare($sql);
+                $liste->execute();
+                $liste = $liste->fetchAll(PDO::FETCH_ASSOC);
+                return $liste;
+            } catch (Exception $e) {
+                die('Erreur: ' . $e->getMessage());
+            }
+        }
+
+        public function triCroissant($page, $perPage)
+        {
+            $start = ($page > 1) ? ($page * $perPage) - $perPage : 0;
+            $sql = "SELECT * FROM article order by nom LIMIT {$start},{$perPage}";
+            $db = config::getConnexion();
+            try {
+                $liste = $db->prepare($sql);
+                $liste->execute();
+                $liste = $liste->fetchAll(PDO::FETCH_ASSOC);
+                return $liste;
+            } catch (Exception $e) {
+                die('Erreur: ' . $e->getMessage());
+            }
+        }
+
+    
+    
+        public function calcTotalRows($perPage)
+        {
+            $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM article";
+            $db = config::getConnexion();
+            try {
+    
+                $liste = $db->query($sql);
+                $total = $db->query("SELECT FOUND_ROWS() as total")->fetch()['total'];
+                $pages = ceil($total / $perPage);
+                return $pages;
+            } catch (Exception $e) {
+                die('Erreur: ' . $e->getMessage());
+            }
+        }
+
+
                
         
     }
