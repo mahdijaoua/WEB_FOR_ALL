@@ -246,6 +246,16 @@ $totalP = $articleC->calcTotalRows($perpage);
 					<td><a class="btn btn-info" href="generate_pdf.php">Save as PDF</a></td>
 		
 			</tfoot>
+            <tfoot>
+				<tr>
+					<td><a class="btn btn-info" href="export_txt.php">Save as txt</a></td>
+		
+			</tfoot>
+            <tfoot>
+				<tr>
+					<td><a class="btn btn-info" href="stat.php">Stat</a></td>
+		
+			</tfoot>
                         <a href="ajouterArticle.php">ajouter article</a>
                     </div>
                     <div class="table-responsive">
