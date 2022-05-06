@@ -41,6 +41,8 @@ $c->add();
   <link href="css/style.css" rel="stylesheet" />
   <!-- responsive style -->
   <link href="css/responsive.css" rel="stylesheet" />
+  <link rel="stylesheet" href="checkout.css" />
+  <script src="https://js.stripe.com/v3/"></script>
 </head>
 
 <body>
@@ -241,7 +243,7 @@ $c->add();
 
         <div class="col-md-6">
           <div class="contact_form-container">
-            <form action="chart.php?checkout" id="checkout" method="POST">
+            <form action="chart.php?checkout" id="payment-form" method="POST">
               <div>
                 <input type="text" placeholder="Your Name" id="nom" name="nom">
                 <span id="nameer"></span>
@@ -254,6 +256,11 @@ $c->add();
                 <input type="text" class="message_input" id="adresse" name="adresse" placeholder="adresse">
                 <span id="adder"></span>
               </div>
+              <div id="card-element" class="form-control">
+                <!-- a Stripe Element will be inserted here. -->
+              </div>
+              <!-- Used to display form errors -->
+              <div id="card-errors" role="alert"></div>
               <input type="text" name="element" value="<?=$val?>" hidden>
               <input type="number" name="prix" value="<?=$total?>" hidden>
               <div class="d-flex justify-content-end">
@@ -262,8 +269,10 @@ $c->add();
                 </button>
               </div>
             </form>
+            <script src="https://js.stripe.com/v3/"></script>
+            <script src="checkout.js"></script>
             <script>
-						let myform =document.getElementById('checkout');
+						let myform =document.getElementById('payment-form');
 						myform.addEventListener('submit',function(e){
 							let nameinput = document.getElementById('nom');
 							let tel = document.getElementById('phone');
