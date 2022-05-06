@@ -2,7 +2,26 @@
     require_once     '../../controller/articleC.php';
 
 $articleC = new articleC();
-$articleS = $articleC->afficherarticle();
+
+
+
+
+
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$perpage = isset($GET['per-page']) && $_GET['per-page'] <= 50 ? (int)$_GET['per-page'] : 3 ;
+$articleS = $articleC->pagination($page, $perpage);
+$totalP = $articleC->calcTotalRows($perpage);
+
+ 
+ if(isset($_POST['tri'])) {
+    //$userS = $userC->triuser();
+    $articleS = $articleC->triCroissant($page, $perpage);
+  }
+  else if(isset($_GET['idv'])) {
+    $articleS = $articleC->recheruser($_GET['idv']);
+ }
+
+
 
 ?>
 <!DOCTYPE html>
@@ -16,7 +35,7 @@ $articleS = $articleC->afficherarticle();
 
          <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
         
-         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script
+         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <head>
     <meta charset="utf-8">
     <title>EShopper - Bootstrap Shop Template</title>
@@ -312,16 +331,30 @@ $articleS = $articleC->afficherarticle();
                 <div class="row pb-3">
                     <div class="col-12 pb-1">
                         <div class="d-flex align-items-center justify-content-between mb-4">
-                            <form action="">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search by name">
-                                    <div class="input-group-append">
-                                        <span class="input-group-text bg-transparent text-primary">
-                                            <i class="fa fa-search"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </form>
+                            
+
+
+                        <form action="" method="POST">
+                            <input type="text" name="tri" hidden>
+    <input type="submit" value="sort by nome" class="btn btn-primary">
+    </form>
+
+
+                
+<form action="" method="GET" 
+                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                         <!--placeholder lhaja ily t7bha tbnleeekk  f l imput s -->
+                         <!--  name lazem aalkhtr najmooo nrecupiro byh l valeur -->
+                            <input type="text" name="idv" class="form-control bg-light border-0 small" placeholder="Search for..."
+                                aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                             <div class="dropdown ml-4">
                                 <button class="btn border dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">
@@ -350,6 +383,14 @@ $articleS = $articleC->afficherarticle();
                                     <h6> <?php echo $article['prix'] ; ?> </h6><h6 class="text-muted ml-2"><del>$123.00</del></h6>
                                 </div>
                             </div>
+                            <div class="rating"><!--
+  --><input name="stars" id="e5" type="radio"></a><label for="e5">☆</label><!--
+		--><input name="stars" id="e4" type="radio"></a><label for="e4">☆</label><!--
+		--><input name="stars" id="e3" type="radio"></a><label for="e3">☆</label><!--
+		--><input name="stars" id="e2" type="radio"></a><label for="e2">☆</label><!--
+		--><input name="stars" id="e1" type="radio"></a><label for="e1">☆</label>
+	</div>
+
                             <div class="card-footer d-flex justify-content-between bg-light border">
                                 <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
                                 <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
@@ -361,30 +402,25 @@ $articleS = $articleC->afficherarticle();
                     
                                 
                 <?php } ?>
+                <div class="row">
+        <nav>
+            <ul class="pagination">
+                <?php
+
+                    for ($x = 1; $x <= $totalP; $x++) :
+
+                ?>
+                
+                <li class="page-item">
+                    <a class="page-link" href="?page=<?php echo $x; ?>&per-page=<?php echo $perpage; ?>"><?php echo $x; ?></a><?php endfor; ?>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
 
 
-
-                    <div class="col-12 pb-1">
-                        <nav aria-label="Page navigation">
-                          <ul class="pagination justify-content-center mb-3">
-                            <li class="page-item disabled">
-                              <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                              </a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                              <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                              </a>
-                            </li>
-                          </ul>
-                        </nav>
-                    </div>
+                     
                 </div>
             </div>
             <!-- Shop Product End -->
@@ -405,6 +441,7 @@ $articleS = $articleC->afficherarticle();
                 <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
                 <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
             </div>
+
             <div class="col-lg-8 col-md-12">
                 <div class="row">
                     <div class="col-md-4 mb-5">
